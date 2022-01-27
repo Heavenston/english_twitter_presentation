@@ -3,24 +3,54 @@
     import Users from "./users";
 
     const troll = {...Users.fake(), verified: true};
+
+    const tweets = [
+        {
+            user: Users.jack,
+            timestamp: 1638200880000,
+            likes: 312200,
+            retweets: 66900,
+            quoteTweets: 37900,
+
+            content: "Not sure anyone has heard but,\n\nI resigned from Twitter",
+        },
+        {
+            user: troll,
+            timestamp: Date.now() - 60 * 60 * 1000,
+
+            content: "Nobody cares\n\n+ ratio"
+        },
+        {
+            user: Users.fake(),
+            timestamp: Date.now() - 60 * 60 * 1000,
+
+            content: "This is annoying"
+        },
+        {
+            user: Users.fake(),
+            timestamp: Date.now() - 60 * 60 * 1000,
+
+            content: "Please stop"
+        }
+    ];
+
+    let selectedTweet = 0;
 </script>
 
 <div class="container">
     <div class="feed">
-        <Tweet user={Users.jack} timestamp={1638200880000} showReplyLine likes={312200} retweets={66900} quoteTweets={37900}>
-            not sure anyone has heard but,<br/>
-            <br/>
-            I resigned from Twitter
-        </Tweet>
-        <Tweet user={troll} isMain replyingTo={Users.jack} timestamp={Date.now() - 60 * 60 * 1000}>
-            Nobody cares<br/><br/>+ ratio
-        </Tweet>
-        <Tweet user={Users.fake()} replyingTo={troll} timestamp={Date.now() - 60 * 60 * 1000}>
-            This is annoying
-        </Tweet>
-        <Tweet user={Users.fake()} replyingTo={troll} timestamp={Date.now() - 60 * 60 * 1000}>
-            Please stop
-        </Tweet>
+        {#each tweets as { content, ...tweet }, i}
+            {#if Math.abs(i-selectedTweet) <= 1}
+                <Tweet 
+                    {...tweet}
+                    isMain={i == selectedTweet}
+                    showReplyLine={i < selectedTweet}
+                    replyingTo={i > 0 ? tweets[i-1].user : null}
+                >
+                    <div style="white-space: pre-wrap;">{content}</div>
+                </Tweet>
+            {/if}
+        {/each}
     </div>
 </div>
 
