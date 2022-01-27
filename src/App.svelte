@@ -1,8 +1,6 @@
 <script lang="ts">
     import Tweet from "./templates/tweet.svelte";
     import Users from "./users";
-    
-    let a = "EPita";
 </script>
 
 <div class="container">
