@@ -11,7 +11,7 @@
     export let user: TwitterUser;
     export let isMain = false;
     export let timestamp = Date.now();
-    export let repliedTo: TwitterUser | null = null;
+    export let replyingTo: TwitterUser | null = null;
     export let comments: number = 0;
     export let retweets: number = 0;
     export let quoteTweets: number = 0;
@@ -104,14 +104,17 @@
             <span class="avatar" style="background-image: url({user.avatarUrl});" />
         </div>
         <div class="mainSide">
-            <span class="nameContainer">
+            <div class="nameContainer">
                 <span class="name">
                     {user.nickname}
                     {#if user.verified}<VerifiedMark />{/if}
                 </span>
                 <span class="notImportant handle">@{user.handle}</span>
                 <span class="notImportant date"> · {dateText}</span>
-            </span>
+            </div>
+            {#if replyingTo !== null}
+                <div class="smol notImportant">Replying to <span class="linkLike">@{replyingTo.handle}</span></div>
+            {/if}
             <div class="content">
                 <slot></slot>
             </div>
@@ -237,5 +240,9 @@
 
 .notImportant {
     color: #8899A6;
+}
+
+.linkLike {
+    color: #1d9bf0;
 }
 </style>

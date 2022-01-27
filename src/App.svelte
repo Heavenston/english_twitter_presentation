@@ -10,7 +10,7 @@
             <br/>
             I resigned from Twitter
         </Tweet>
-        <Tweet user={{...Users.fake, verified: true}} timestamp={Date.now() - 60 * 60 * 1000}>
+        <Tweet user={{...Users.fake, verified: true}} replyingTo={Users.jack} timestamp={Date.now() - 60 * 60 * 1000}>
             Nobody cares<br/><br/>+ ratio
         </Tweet>
     </div>
