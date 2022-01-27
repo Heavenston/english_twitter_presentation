@@ -12,6 +12,7 @@
     export let isMain = false;
     export let timestamp = Date.now();
     export let replyingTo: TwitterUser | null = null;
+    export let showReplyLine = false;
     export let comments: number = 0;
     export let retweets: number = 0;
     export let quoteTweets: number = 0;
@@ -102,13 +103,16 @@
         </div>
     </div>
 {:else}
-    <div class="tweet">
+    <div class="tweet" class:hasReplyLine={showReplyLine}>
         <div class="avatarSide">
-            <span class="avatar" style="background-image: url({user.avatarUrl});" />
+            <div class="avatar" style="background-image: url({user.avatarUrl});" />
+            {#if showReplyLine}
+                <div class="replyLine" />
+            {/if}
         </div>
         <div class="mainSide">
             <div class="nameContainer">
-                <span class="name">
+                <span class="important name">
                     {user.nickname}
                     {#if user.verified}<VerifiedMark />{/if}
                 </span>
@@ -157,7 +161,7 @@
 
     border-style: solid;
     border-color: rgb(56, 68, 77);
-    border-width: 0px 0 1px 0px;
+    border-width: 0 0 1px 0;
 
     .avatar {
         display: inline-block;
@@ -167,7 +171,6 @@
         background-size: cover;
         border-radius: 50%;
 
-        margin-right: 12px;
     }
 
     .content {
@@ -189,6 +192,10 @@
         margin-bottom: 16px;
     }
 
+    .avatar {
+        margin-right: 12px;
+    }
+
     .replyingTo {
         margin-bottom: 16px;
     }
@@ -204,6 +211,7 @@
         margin-top: 16px;
         margin-bottom: 16px;
     }
+
 
     .stats {
         display: flex;
@@ -235,6 +243,28 @@
         flex-direction: row;
 
         margin-top: 12px;
+    }
+
+    .avatarSide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin-right: 12px;
+    }
+
+    &.hasReplyLine {
+        border-width: 0;
+        padding-bottom: 0;
+    }
+
+    .replyLine {
+        margin-top: 4px;
+        margin-bottom: -10px;
+
+        background-color: #3d5466;
+        width: 2px;
+        flex-grow: 1;
     }
 }
 
