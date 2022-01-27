@@ -260,7 +260,7 @@
 
     .replyLine {
         margin-top: 4px;
-        margin-bottom: -10px;
+        margin-bottom: -9px;
 
         background-color: #3d5466;
         width: 2px;
