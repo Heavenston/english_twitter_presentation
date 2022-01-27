@@ -63,6 +63,9 @@
                 <span class="notImportant handle">@{user.handle}</span>
             </span>
         </div>
+        {#if replyingTo !== null}
+            <div class="smol notImportant replyingTo">Replying to <span class="linkLike">@{replyingTo.handle}</span></div>
+        {/if}
         <div class="content">
             <slot></slot>
         </div>
@@ -113,7 +116,7 @@
                 <span class="notImportant date"> · {dateText}</span>
             </div>
             {#if replyingTo !== null}
-                <div class="smol notImportant">Replying to <span class="linkLike">@{replyingTo.handle}</span></div>
+                <div class="smol replyingTo notImportant">Replying to <span class="linkLike">@{replyingTo.handle}</span></div>
             {/if}
             <div class="content">
                 <slot></slot>
@@ -185,6 +188,11 @@
 
         margin-bottom: 16px;
     }
+
+    .replyingTo {
+        margin-bottom: 16px;
+    }
+
     .nameContainer {
         display: inline-flex;
         flex-direction: column;
@@ -214,6 +222,7 @@
         padding: 16px 4px 16px 4px;
         border-top: 1px solid rgb(56, 68, 77);
     }
+
 }
 
 .tweet:not(.main) {
