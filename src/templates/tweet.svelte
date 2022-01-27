@@ -1,5 +1,10 @@
 <script lang="ts">
     import VerifiedMark from "../components/verifiedMark.svelte";
+    import LikeIcon from "../components/likeIcon.svelte";
+    import RetweetIcon from "../components/retweetIcon.svelte";
+    import ShareIcon from "../components/shareIcon.svelte";
+    import CommentIcon from "../components/commentIcon.svelte";
+
     import dayjs from "dayjs";
     import type { TwitterUser } from "../types";
 
@@ -78,6 +83,20 @@
                 <span class="notImportant">Likes</span>
             </span>
         </div>
+        <div class="actions smol notImportant">
+            <span>
+                <span><CommentIcon/></span>
+            </span>
+            <span>
+                <span><RetweetIcon/></span>
+            </span>
+            <span>
+                <span><LikeIcon/></span>
+            </span>
+            <span>
+                <span><ShareIcon/></span>
+            </span>
+        </div>
     </div>
 {:else}
     <div class="tweet">
@@ -95,6 +114,23 @@
             </span>
             <div class="content">
                 <slot></slot>
+            </div>
+            <div class="stats smol notImportant">
+                <span>
+                    <span><CommentIcon/></span>
+                    <span>{formatStat(comments)}</span>
+                </span>
+                <span>
+                    <span><RetweetIcon/></span>
+                    <span>{formatStat(retweets + quoteTweets)}</span>
+                </span>
+                <span>
+                    <span><LikeIcon/></span>
+                    <span>{formatStat(likes)}</span>
+                </span>
+                <span>
+                    <span><ShareIcon/></span>
+                </span>
             </div>
         </div>
     </div>
@@ -165,10 +201,29 @@
         padding: 16px 4px 16px 4px;
         border-top: 1px solid rgb(56, 68, 77);
     }
+
+    .actions {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        flex-direction: row;
+
+        padding: 16px 4px 16px 4px;
+        border-top: 1px solid rgb(56, 68, 77);
+    }
 }
 
 .tweet:not(.main) {
     display: flex;
+
+    .stats {
+        display: flex;
+        width: 425px;
+        justify-content: space-between;
+        flex-direction: row;
+
+        margin-top: 12px;
+    }
 }
 
 .smol {
