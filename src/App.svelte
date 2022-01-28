@@ -4,65 +4,7 @@
     import Users from "./users";
     import { onMount, afterUpdate } from "svelte/internal";
     import { spring } from 'svelte/motion';
-
-    const troll = {...Users.fake(), verified: true};
-
-    const tweets: TweetData[] = [
-        {
-            user: Users.jack,
-            timestamp: 1638200880000,
-            likes: 312200,
-            retweets: 66900,
-            quoteTweets: 37900,
-
-            imageUrl: "https://pbs.twimg.com/media/FFX1IQ0WUAEqaLH?format=jpg&name=large",
-            maxImageHeight: "200px",
-
-            content: "Not sure anyone has heard but,\n\nI resigned from Twitter",
-
-            comments: [
-                {
-                    user: Users.twitter,
-                    timestamp: Date.now() - 60 * 60 * 1000,
-                    likes: 24600,
-                    retweets: 1219,
-                    quoteTweets: 153,
-
-                    content: "absolute legend"
-                },
-                {
-                    user: troll,
-                    timestamp: Date.now() - 60 * 60 * 1000,
-                    likes: 312200,
-                    retweets: 66900,
-                    quoteTweets: 37900,
-
-                    content: "Nobody cares\n\n+ ratio",
-
-                    comments: [
-                        {
-                            user: Users.fake(),
-                            timestamp: Date.now() - 60 * 60 * 1000,
-                            likes: 312200,
-                            retweets: 66900,
-                            quoteTweets: 37900,
-
-                            content: "This is annoying"
-                        },
-                        {
-                            user: Users.fake(),
-                            timestamp: Date.now() - 60 * 60 * 1000,
-                            likes: 312200,
-                            retweets: 66900,
-                            quoteTweets: 37900,
-
-                            content: "Please stop"
-                        },
-                    ]
-                },
-            ],
-        },
-    ];
+    import tweets from "./tweets";
 
     let previousTweets: TweetData[] = [];
     let selectedTweet = tweets[0];
