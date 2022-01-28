@@ -57,6 +57,16 @@
     let selectedTweetElement: HTMLDivElement | null = null;
     let feed: HTMLDivElement | null = null;
 
+    function updateScroll() {
+        if (selectedTweetElement !== null && feed !== null) {
+            const clientRect = selectedTweetElement.getBoundingClientRect();
+            feed.scrollTo({
+                top: clientRect.top + feed.scrollTop + clientRect.height / 2 - 250,
+                behavior: "smooth",
+            });
+        }
+    }
+
     onMount(() => {
         const keyDownListener = (ev: KeyboardEvent) => {
             if (ev.code == "Space" || ev.code == "ArrowRight") {
@@ -79,19 +89,15 @@
             }
         }
         document.addEventListener("keydown", keyDownListener);
+        window.addEventListener("resize", updateScroll);
 
-        return () => document.removeEventListener("keydown", keyDownListener);
+        return () => {
+            document.removeEventListener("keydown", keyDownListener);
+            document.removeEventListener("resize", updateScroll);
+        };
     });
 
-    afterUpdate(() => {
-        if (selectedTweetElement !== null && feed !== null) {
-            const clientRect = selectedTweetElement.getBoundingClientRect();
-            feed.scrollTo({
-                top: clientRect.top + feed.scrollTop + clientRect.height / 2 - window.innerHeight / 2,
-                behavior: "smooth",
-            });
-        }
-    });
+    afterUpdate(updateScroll);
 </script>
 
 <div class="container">
@@ -164,6 +170,6 @@
     }
 
     .scrollForcer {
-        height: 100vh;
+        height: 100%;
     }
 </style>
