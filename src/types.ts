@@ -11,6 +11,8 @@ export interface TweetData {
     likes?: number;
     retweets?: number;
     quoteTweets?: number;
+    imageUrl?: string;
+    maxImageHeight?: string;
 
     comments?: TweetData[];
     content: string;

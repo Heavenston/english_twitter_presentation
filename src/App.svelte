@@ -3,6 +3,7 @@
     import Tweet from "./templates/tweet.svelte";
     import Users from "./users";
     import { onMount, afterUpdate } from "svelte/internal";
+    import { spring } from 'svelte/motion';
 
     const troll = {...Users.fake(), verified: true};
 
@@ -13,6 +14,9 @@
             likes: 312200,
             retweets: 66900,
             quoteTweets: 37900,
+
+            imageUrl: "https://pbs.twimg.com/media/FFX1IQ0WUAEqaLH?format=jpg&name=large",
+            maxImageHeight: "200px",
 
             content: "Not sure anyone has heard but,\n\nI resigned from Twitter",
 
@@ -57,13 +61,15 @@
     let selectedTweetElement: HTMLDivElement | null = null;
     let feed: HTMLDivElement | null = null;
 
+    let scrollSpring = spring(0, { stiffness: 0.3, damping: 1.0 });
+    $: if (feed !== null) {
+        feed.scrollTop = $scrollSpring;
+    };
+
     function updateScroll() {
         if (selectedTweetElement !== null && feed !== null) {
             const clientRect = selectedTweetElement.getBoundingClientRect();
-            feed.scrollTo({
-                top: clientRect.top + feed.scrollTop - 50,
-                behavior: "smooth",
-            });
+            scrollSpring.set(clientRect.top + feed.scrollTop - 50);
         }
     }
 

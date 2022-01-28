@@ -19,6 +19,8 @@
     export let retweets: number = 0;
     export let quoteTweets: number = 0;
     export let likes: number = 0;
+    export let imageUrl: string | null = null;
+    export let maxImageHeight: string | null = null;
 
     $: date = dayjs(timestamp);
     $: nowDate = dayjs();
@@ -72,6 +74,9 @@
         <div class="content">
             <slot></slot>
         </div>
+        {#if imageUrl}
+            <img src={imageUrl} style={maxImageHeight ? `max-height: ${maxImageHeight};` : ""} class="embed" alt="Picsum" />
+        {/if}
         <div class="notImportant smol date">
             {dateText} · Twitter For Malo
         </div>
@@ -127,6 +132,9 @@
             <div class="content">
                 <slot></slot>
             </div>
+            {#if imageUrl}
+                <img src={imageUrl} class="embed" alt="Picsum" />
+            {/if}
             <div class="stats smol notImportant">
                 <span>
                     <span><CommentIcon/></span>
@@ -177,6 +185,17 @@
 
     .content {
         overflow-wrap: break-word;
+    }
+
+    .embed {
+        width: 100%;
+        height: auto;
+
+        border-radius: 16px;
+        margin-top: 12px;
+
+        object-fit: cover;
+        object-position: center top;
     }
 }
 
