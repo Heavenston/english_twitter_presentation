@@ -8,7 +8,6 @@
 
     const tweets: TweetData[] = [
         {
-            key: 0,
             user: Users.jack,
             timestamp: 1638200880000,
             likes: 312200,
@@ -19,7 +18,6 @@
 
             comments: [
                 {
-                    key: 1,
                     user: troll,
                     timestamp: Date.now() - 60 * 60 * 1000,
                     likes: 312200,
@@ -30,7 +28,6 @@
 
                     comments: [
                         {
-                            key: 2,
                             user: Users.fake(),
                             timestamp: Date.now() - 60 * 60 * 1000,
                             likes: 312200,
@@ -40,7 +37,6 @@
                             content: "This is annoying"
                         },
                         {
-                            key: 3,
                             user: Users.fake(),
                             timestamp: Date.now() - 60 * 60 * 1000,
                             likes: 312200,
@@ -101,7 +97,7 @@
 <div class="container">
     <div class="feed" bind:this={feed}>
         <div class="scrollForcer" />
-        {#each previousTweets as { content, comments: _, key, ...tweet}, i (key)}
+        {#each previousTweets as { content, comments: _, key, ...tweet}, i}
             <Tweet
                 {...tweet}
                 replyingTo={i > 0 ? previousTweets[i-1].user : null}
@@ -110,7 +106,7 @@
                 <div style="white-space: pre-wrap;">{content}</div>
             </Tweet>
         {/each}
-        {#each selectedTweet ? [selectedTweet] : [] as { content, comments: _, key, ...tweet} (key)}
+        {#each selectedTweet ? [selectedTweet] : [] as { content, comments: _, key, ...tweet}}
             <Tweet
                 {...tweet}
                 isMain
@@ -120,7 +116,7 @@
                 <div style="white-space: pre-wrap;">{content}</div>
             </Tweet>
         {/each}
-        {#each selectedTweet?.comments ?? [] as { content, comments: _, key, ...tweet } (key)}
+        {#each selectedTweet?.comments ?? [] as { content, comments: _, key, ...tweet }}
             <Tweet 
                 {...tweet}
                 replyingTo={selectedTweet?.user}

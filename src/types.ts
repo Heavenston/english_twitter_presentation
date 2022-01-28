@@ -1,4 +1,3 @@
-
 export interface TwitterUser {
     nickname: string;
     avatarUrl: string;
@@ -7,7 +6,6 @@ export interface TwitterUser {
 }
 
 export interface TweetData {
-    key?: string | number;
     user: TwitterUser;
     timestamp: number;
     likes?: number;
