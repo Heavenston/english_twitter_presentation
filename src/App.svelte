@@ -1,10 +1,11 @@
 <script lang="ts">
+    import type { TwitterUser, TweetData } from "./types";
     import Tweet from "./templates/tweet.svelte";
     import Users from "./users";
 
     const troll = {...Users.fake(), verified: true};
 
-    const tweets = [
+    const tweets: TweetData[] = [
         {
             user: Users.jack,
             timestamp: 1638200880000,
@@ -13,44 +14,66 @@
             quoteTweets: 37900,
 
             content: "Not sure anyone has heard but,\n\nI resigned from Twitter",
-        },
-        {
-            user: troll,
-            timestamp: Date.now() - 60 * 60 * 1000,
 
-            content: "Nobody cares\n\n+ ratio"
-        },
-        {
-            user: Users.fake(),
-            timestamp: Date.now() - 60 * 60 * 1000,
+            comments: [
+                {
+                    user: troll,
+                    timestamp: Date.now() - 60 * 60 * 1000,
 
-            content: "This is annoying"
-        },
-        {
-            user: Users.fake(),
-            timestamp: Date.now() - 60 * 60 * 1000,
+                    content: "Nobody cares\n\n+ ratio",
 
-            content: "Please stop"
-        }
+                    comments: [
+                        {
+                            user: Users.fake(),
+                            timestamp: Date.now() - 60 * 60 * 1000,
+
+                            content: "This is annoying"
+                        },
+                        {
+                            user: Users.fake(),
+                            timestamp: Date.now() - 60 * 60 * 1000,
+
+                            content: "Please stop"
+                        },
+                    ]
+                },
+            ],
+        },
     ];
 
-    let selectedTweet = 0;
+    let previousTweet: TweetData | null = tweets[0];
+    let selectedTweet = tweets[0].comments?.[0];
 </script>
 
 <div class="container">
     <div class="feed">
-        {#each tweets as { content, ...tweet }, i}
-            {#if Math.abs(i-selectedTweet) <= 1}
-                <Tweet 
-                    {...tweet}
-                    isMain={i == selectedTweet}
-                    showReplyLine={i < selectedTweet}
-                    replyingTo={i > 0 ? tweets[i-1].user : null}
-                >
-                    <div style="white-space: pre-wrap;">{content}</div>
-                </Tweet>
-            {/if}
+        <div class="scrollForcer" />
+        {#each previousTweet ? [previousTweet] : [] as { content, comments: _, ...tweet}}
+            <Tweet
+                {...tweet}
+                showReplyLine
+            >
+                <div style="white-space: pre-wrap;">{content}</div>
+            </Tweet>
         {/each}
+        {#each selectedTweet ? [selectedTweet] : [] as { content, comments: _, ...tweet}}
+            <Tweet
+                {...tweet}
+                isMain
+                replyingTo={previousTweet?.user ?? null}
+            >
+                <div style="white-space: pre-wrap;">{content}</div>
+            </Tweet>
+        {/each}
+        {#each selectedTweet?.comments ?? [] as { content, comments: _, ...tweet }, i}
+            <Tweet 
+                {...tweet}
+                replyingTo={selectedTweet?.user}
+            >
+                <div style="white-space: pre-wrap;">{content}</div>
+            </Tweet>
+        {/each}
+        <div class="scrollForcer" />
     </div>
 </div>
 
@@ -87,5 +110,9 @@
         width: 600px;
 
         overflow-y: auto;
+    }
+
+    .scrollForcer {
+        height: 100vh;
     }
 </style>
