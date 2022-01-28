@@ -14,15 +14,17 @@ const startTweet: TweetData = {
         "https://pbs.twimg.com/media/FFX1IQ0WUAEqaLH?format=jpg&name=large",
     maxImageHeight: "200px",
 
-    content: `Not sure anyone has heard but,
+    content: `
+Not sure anyone has heard but,
 
-I resigned from Twitter`,
+I resigned from Twitter
+`,
     comments: [],
 };
 
 startTweet.comments?.push({
     user: Users.twitter,
-    timestamp: Date.now() - 60 * 60 * 1000,
+    timestamp: Date.now(),
     likes: 24600,
     retweets: 1219,
     quoteTweets: 153,
@@ -33,17 +35,21 @@ startTweet.comments?.push({
 
 startTweet.comments?.push({
     user: troll,
-    timestamp: Date.now() - 60 * 60 * 1000,
+    timestamp: Date.now(),
     likes: 312200,
     retweets: 66900,
     quoteTweets: 37900,
 
-    content: "Nobody cares\n\n+ ratio",
+    content: `
+Nobody cares
+
++ ratio
+`,
 
     comments: [
         {
             user: Users.fake(),
-            timestamp: Date.now() - 60 * 60 * 1000,
+            timestamp: Date.now(),
             likes: 312200,
             retweets: 66900,
             quoteTweets: 37900,
