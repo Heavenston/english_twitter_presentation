@@ -22,6 +22,15 @@
 
             comments: [
                 {
+                    user: Users.twitter,
+                    timestamp: Date.now() - 60 * 60 * 1000,
+                    likes: 24600,
+                    retweets: 1219,
+                    quoteTweets: 153,
+
+                    content: "absolute legend"
+                },
+                {
                     user: troll,
                     timestamp: Date.now() - 60 * 60 * 1000,
                     likes: 312200,

@@ -59,7 +59,7 @@
 {#if isMain}
     <div class="tweet main" bind:this={containerEl}>
         <div class="header smol">
-            <span class="avatar" style="background-image: url({user.avatarUrl});" />
+            <span class:hexagonal={!!user.hexagonalPfp} class="avatar" style="background-image: url({user.avatarUrl});" />
             <span class="nameContainer">
                 <span class="important name">
                     {user.nickname}
@@ -112,7 +112,7 @@
 {:else}
     <div class="tweet" class:hasReplyLine={showReplyLine} bind:this={containerEl}>
         <div class="avatarSide">
-            <div class="avatar" style="background-image: url({user.avatarUrl});" />
+            <div class:hexagonal={!!user.hexagonalPfp} class="avatar" style="background-image: url({user.avatarUrl});" />
             {#if showReplyLine}
                 <div class="replyLine" />
             {/if}
@@ -133,7 +133,7 @@
                 <slot></slot>
             </div>
             {#if imageUrl}
-                <img src={imageUrl} class="embed" alt="Picsum" />
+                <img src={imageUrl} style={maxImageHeight ? `max-height: ${maxImageHeight};` : ""} class="embed" alt="Picsum" />
             {/if}
             <div class="stats smol notImportant">
                 <span>
@@ -181,6 +181,10 @@
         background-size: cover;
         border-radius: 50%;
 
+        &.hexagonal {
+            border-radius: 0;
+            clip-path: url(#hex-hw-shapeclip-clipconfig);
+        }
     }
 
     .content {

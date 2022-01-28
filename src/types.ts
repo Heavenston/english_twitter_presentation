@@ -1,6 +1,7 @@
 export interface TwitterUser {
     nickname: string;
     avatarUrl: string;
+    hexagonalPfp?: boolean;
     handle: string;
     verified: boolean;
 }
