@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { TwitterUser, TweetData } from "./types";
+    import type { TweetData } from "./types";
     import Tweet from "./templates/tweet.svelte";
     import Users from "./users";
     import { onMount, afterUpdate } from "svelte/internal";
