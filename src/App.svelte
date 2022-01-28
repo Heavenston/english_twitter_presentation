@@ -61,7 +61,7 @@
         if (selectedTweetElement !== null && feed !== null) {
             const clientRect = selectedTweetElement.getBoundingClientRect();
             feed.scrollTo({
-                top: clientRect.top + feed.scrollTop + clientRect.height / 2 - 250,
+                top: clientRect.top + feed.scrollTop - 50,
                 behavior: "smooth",
             });
         }
@@ -103,7 +103,7 @@
 <div class="container">
     <div class="feed" bind:this={feed}>
         <div class="scrollForcer" />
-        {#each previousTweets as { content, comments: _, key, ...tweet}, i}
+        {#each previousTweets as { content, comments: _, ...tweet}, i}
             <Tweet
                 {...tweet}
                 replyingTo={i > 0 ? previousTweets[i-1].user : null}
@@ -112,7 +112,7 @@
                 <div style="white-space: pre-wrap;">{content}</div>
             </Tweet>
         {/each}
-        {#each selectedTweet ? [selectedTweet] : [] as { content, comments: _, key, ...tweet}}
+        {#each selectedTweet ? [selectedTweet] : [] as { content, comments: _, ...tweet}}
             <Tweet
                 {...tweet}
                 isMain
@@ -122,7 +122,7 @@
                 <div style="white-space: pre-wrap;">{content}</div>
             </Tweet>
         {/each}
-        {#each selectedTweet?.comments ?? [] as { content, comments: _, key, ...tweet }}
+        {#each selectedTweet?.comments ?? [] as { content, comments: _, ...tweet }}
             <Tweet 
                 {...tweet}
                 replyingTo={selectedTweet?.user}
