@@ -79,14 +79,14 @@
                         replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
                         bind:containerEl={selectedTweetElement}
                     >
-                        <div style="white-space: pre-wrap;">{content}</div>
+                        <div style="white-space: pre-wrap;">{content.trim()}</div>
                     </Tweet>
                 {:else}
                     <Tweet
                         {...tweet}
                         replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
                     >
-                        <div style="white-space: pre-wrap;">{content}</div>
+                        <div style="white-space: pre-wrap;">{content.trim()}</div>
                     </Tweet>
                 {/if}
             {/each}
@@ -97,7 +97,7 @@
                     replyingTo={i > 0 ? previousTweets[i-1].user : null}
                     showReplyLine
                 >
-                    <div style="white-space: pre-wrap;">{content}</div>
+                    <div style="white-space: pre-wrap;">{content.trim()}</div>
                 </Tweet>
             {/each}
             {#each selectedTweet ? [selectedTweet] : [] as { content, comments: _, ...tweet}}
@@ -107,7 +107,7 @@
                     replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
                     bind:containerEl={selectedTweetElement}
                 >
-                    <div style="white-space: pre-wrap;">{content}</div>
+                    <div style="white-space: pre-wrap;">{content.trim()}</div>
                 </Tweet>
             {/each}
             {#each selectedTweet?.comments ?? [] as { content, comments: _, ...tweet }}
@@ -115,7 +115,7 @@
                     {...tweet}
                     replyingTo={selectedTweet?.user}
                 >
-                    <div style="white-space: pre-wrap;">{content}</div>
+                    <div style="white-space: pre-wrap;">{content.trim()}</div>
                 </Tweet>
             {/each}
         {/if}
