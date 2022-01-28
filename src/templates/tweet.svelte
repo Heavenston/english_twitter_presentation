@@ -5,6 +5,8 @@
     import ShareIcon from "../components/shareIcon.svelte";
     import CommentIcon from "../components/commentIcon.svelte";
 
+    export let containerEl: HTMLDivElement | null = null;
+
     import dayjs from "dayjs";
     import type { TwitterUser } from "../types";
 
@@ -53,7 +55,7 @@
 </script>
 
 {#if isMain}
-    <div class="tweet main">
+    <div class="tweet main" bind:this={containerEl}>
         <div class="header smol">
             <span class="avatar" style="background-image: url({user.avatarUrl});" />
             <span class="nameContainer">
@@ -103,7 +105,7 @@
         </div>
     </div>
 {:else}
-    <div class="tweet" class:hasReplyLine={showReplyLine}>
+    <div class="tweet" class:hasReplyLine={showReplyLine} bind:this={containerEl}>
         <div class="avatarSide">
             <div class="avatar" style="background-image: url({user.avatarUrl});" />
             {#if showReplyLine}

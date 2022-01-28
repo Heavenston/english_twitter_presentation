@@ -2,6 +2,7 @@
     import type { TwitterUser, TweetData } from "./types";
     import Tweet from "./templates/tweet.svelte";
     import Users from "./users";
+    import { onMount, afterUpdate } from "svelte/internal";
 
     const troll = {...Users.fake(), verified: true};
 
@@ -19,6 +20,9 @@
                 {
                     user: troll,
                     timestamp: Date.now() - 60 * 60 * 1000,
+                    likes: 312200,
+                    retweets: 66900,
+                    quoteTweets: 37900,
 
                     content: "Nobody cares\n\n+ ratio",
 
@@ -26,12 +30,18 @@
                         {
                             user: Users.fake(),
                             timestamp: Date.now() - 60 * 60 * 1000,
+                            likes: 312200,
+                            retweets: 66900,
+                            quoteTweets: 37900,
 
                             content: "This is annoying"
                         },
                         {
                             user: Users.fake(),
                             timestamp: Date.now() - 60 * 60 * 1000,
+                            likes: 312200,
+                            retweets: 66900,
+                            quoteTweets: 37900,
 
                             content: "Please stop"
                         },
@@ -41,16 +51,48 @@
         },
     ];
 
-    let previousTweet: TweetData | null = tweets[0];
-    let selectedTweet = tweets[0].comments?.[0];
+    let previousTweets: TweetData[] = [];
+    let selectedTweet = tweets[0];
+
+    let selectedTweetElement: HTMLDivElement | null = null;
+    let feed: HTMLDivElement | null = null;
+
+    onMount(() => {
+        setTimeout(async () => {
+            let a = selectedTweet;
+            if (a?.comments !== undefined && a.comments.length > 0) {
+                previousTweets = [...previousTweets, a];
+                selectedTweet = a.comments[0];
+            }
+        }, 4000);
+        setTimeout(async () => {
+            let a = selectedTweet;
+            if (a?.comments !== undefined && a.comments.length > 0) {
+                previousTweets = [...previousTweets, a];
+                selectedTweet = a.comments[0];
+            }
+        }, 8000);
+    });
+
+    afterUpdate(() => {
+        if (selectedTweetElement !== null && feed !== null) {
+            const clientRect = selectedTweetElement.getBoundingClientRect();
+            const feedRect = feed.getBoundingClientRect();
+            feed.scrollTo({
+                top: clientRect.top + feed.scrollTop + clientRect.height / 2 - window.innerHeight / 2,
+                behavior: "smooth",
+            });
+        }
+    });
 </script>
 
 <div class="container">
-    <div class="feed">
+    <div class="feed" bind:this={feed}>
         <div class="scrollForcer" />
-        {#each previousTweet ? [previousTweet] : [] as { content, comments: _, ...tweet}}
+        {#each previousTweets as { content, comments: _, ...tweet}, i}
             <Tweet
                 {...tweet}
+                replyingTo={i > 0 ? previousTweets[i-1].user : null}
                 showReplyLine
             >
                 <div style="white-space: pre-wrap;">{content}</div>
@@ -60,7 +102,8 @@
             <Tweet
                 {...tweet}
                 isMain
-                replyingTo={previousTweet?.user ?? null}
+                replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
+                bind:containerEl={selectedTweetElement}
             >
                 <div style="white-space: pre-wrap;">{content}</div>
             </Tweet>
@@ -109,7 +152,7 @@
 
         width: 600px;
 
-        overflow-y: auto;
+        overflow-y: hidden;
     }
 
     .scrollForcer {
