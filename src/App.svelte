@@ -58,20 +58,29 @@
     let feed: HTMLDivElement | null = null;
 
     onMount(() => {
-        setTimeout(async () => {
-            let a = selectedTweet;
-            if (a?.comments !== undefined && a.comments.length > 0) {
-                previousTweets = [...previousTweets, a];
-                selectedTweet = a.comments[0];
+        const keyDownListener = (ev: KeyboardEvent) => {
+            if (ev.code == "Space" || ev.code == "ArrowRight") {
+                ev.preventDefault();
+                let a = selectedTweet;
+
+                if (a?.comments !== undefined && a.comments.length > 0) {
+                    previousTweets = [...previousTweets, a];
+                    selectedTweet = a.comments[0];
+                }
             }
-        }, 4000);
-        setTimeout(async () => {
-            let a = selectedTweet;
-            if (a?.comments !== undefined && a.comments.length > 0) {
-                previousTweets = [...previousTweets, a];
-                selectedTweet = a.comments[0];
+            if (ev.code == "ArrowLeft") {
+                ev.preventDefault();
+                if (previousTweets.length > 0) {
+                    previousTweets = [...previousTweets];
+                    const n = previousTweets.pop();
+                    if (n != undefined)
+                        selectedTweet = n;
+                }
             }
-        }, 8000);
+        }
+        document.addEventListener("keydown", keyDownListener);
+
+        return () => document.removeEventListener("keydown", keyDownListener);
     });
 
     afterUpdate(() => {
