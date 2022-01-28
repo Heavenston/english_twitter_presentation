@@ -15,6 +15,7 @@
     export let timestamp = Date.now();
     export let replyingTo: TwitterUser | null = null;
     export let showReplyLine = false;
+    export let showThisThread: boolean = false;
     export let comments: number = 0;
     export let retweets: number = 0;
     export let quoteTweets: number = 0;
@@ -111,48 +112,56 @@
     </div>
 {:else}
     <div class="tweet" class:hasReplyLine={showReplyLine} bind:this={containerEl}>
-        <div class="avatarSide">
-            <div class:hexagonal={!!user.hexagonalPfp} class="avatar" style="background-image: url({user.avatarUrl});" />
-            {#if showReplyLine}
-                <div class="replyLine" />
-            {/if}
+        <div class="contentBand">
+            <div class="avatarSide">
+                <div class:hexagonal={!!user.hexagonalPfp} class="avatar" style="background-image: url({user.avatarUrl});" />
+                {#if showReplyLine || showThisThread}
+                    <div class="replyLine" class:isForShowThread={showThisThread} />
+                {/if}
+            </div>
+            <div class="mainSide">
+                <div class="nameContainer">
+                    <span class="important name">
+                        {user.nickname}
+                        {#if user.verified}<VerifiedMark />{/if}
+                    </span>
+                    <span class="notImportant handle">@{user.handle}</span>
+                    <span class="notImportant date"> · {dateText}</span>
+                </div>
+                {#if replyingTo !== null}
+                    <div class="smol replyingTo notImportant">Replying to <span class="linkLike">@{replyingTo.handle}</span></div>
+                {/if}
+                <div class="content">
+                    <slot></slot>
+                </div>
+                {#if imageUrl}
+                    <img src={imageUrl} style={maxImageHeight ? `max-height: ${maxImageHeight};` : ""} class="embed" alt="Picsum" />
+                {/if}
+                <div class="stats smol notImportant">
+                    <span>
+                        <span><CommentIcon/></span>
+                        <span>{formatStat(comments)}</span>
+                    </span>
+                    <span>
+                        <span><RetweetIcon/></span>
+                        <span>{formatStat(retweets + quoteTweets)}</span>
+                    </span>
+                    <span>
+                        <span><LikeIcon/></span>
+                        <span>{formatStat(likes)}</span>
+                    </span>
+                    <span>
+                        <span><ShareIcon/></span>
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="mainSide">
-            <div class="nameContainer">
-                <span class="important name">
-                    {user.nickname}
-                    {#if user.verified}<VerifiedMark />{/if}
-                </span>
-                <span class="notImportant handle">@{user.handle}</span>
-                <span class="notImportant date"> · {dateText}</span>
+        {#if showThisThread}
+            <div class="thisThread">
+                <div class:hexagonal={!!user.hexagonalPfp} class="avatar" style="background-image: url({user.avatarUrl});" />
+                <div class="linkLike text">Show this thread</div>
             </div>
-            {#if replyingTo !== null}
-                <div class="smol replyingTo notImportant">Replying to <span class="linkLike">@{replyingTo.handle}</span></div>
-            {/if}
-            <div class="content">
-                <slot></slot>
-            </div>
-            {#if imageUrl}
-                <img src={imageUrl} style={maxImageHeight ? `max-height: ${maxImageHeight};` : ""} class="embed" alt="Picsum" />
-            {/if}
-            <div class="stats smol notImportant">
-                <span>
-                    <span><CommentIcon/></span>
-                    <span>{formatStat(comments)}</span>
-                </span>
-                <span>
-                    <span><RetweetIcon/></span>
-                    <span>{formatStat(retweets + quoteTweets)}</span>
-                </span>
-                <span>
-                    <span><LikeIcon/></span>
-                    <span>{formatStat(likes)}</span>
-                </span>
-                <span>
-                    <span><ShareIcon/></span>
-                </span>
-            </div>
-        </div>
+        {/if}
     </div>
 {/if}
 
@@ -165,7 +174,6 @@
     line-height: 20px;
 
     padding-top: 12px;
-    padding-bottom: 12px;
     padding-right: 16px;
     padding-left: 16px;
 
@@ -209,6 +217,7 @@
     line-height: 28px;
 
     padding-bottom: 0;
+    padding-bottom: 12px;
 
     .header {
         display: inline-flex;
@@ -260,6 +269,15 @@
 
 .tweet:not(.main) {
     display: flex;
+    flex-direction: column;
+
+    .mainSide {
+        padding-bottom: 12px;
+    }
+
+    .contentBand {
+        display: flex;
+    }
 
     .stats {
         display: flex;
@@ -287,9 +305,37 @@
         margin-top: 4px;
         margin-bottom: -9px;
 
+        &.isForShowThread {
+            margin-bottom: 1px;
+        }
+
         background-color: #3d5466;
         width: 2px;
         flex-grow: 1;
+    }
+
+    .thisThread {
+        display: flex;
+
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 8px;
+
+        .avatar {
+            display: inline-block;
+
+            height: 32px;
+            width: 32px;
+
+            margin-right: 20px;
+        }
+
+        .text {
+            display: inline-block;
+
+            padding: 8px 0;
+            flex-grow: 1;
+        }
     }
 }
 
