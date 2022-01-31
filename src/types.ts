@@ -16,6 +16,7 @@ export interface TweetData {
     maxImageHeight?: string;
     showFullThread?: boolean;
 
+    mainComment?: number;
     commentList?: TweetData[];
     content: string;
 }

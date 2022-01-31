@@ -40,8 +40,9 @@
                     let a = selectedTweet;
 
                     if (a?.commentList && a.commentList.length > 0) {
+                        const nextIndex = a.mainComment ?? 0;
                         previousTweets = [...previousTweets, a];
-                        selectedTweet = {...a.commentList[0]};
+                        selectedTweet = {...a.commentList[nextIndex]};
                     }
                 }
             }

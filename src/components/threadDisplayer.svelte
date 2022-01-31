@@ -20,5 +20,5 @@
 </Tweet>
 
 {#if tweet.commentList && tweet.commentList.length > 0}
-    <svelte:self tweet={tweet.commentList[0]} replyingTo={tweet.user} />
+    <svelte:self tweet={tweet.commentList[tweet.mainComment ?? 0]} replyingTo={tweet.user} />
 {/if}
