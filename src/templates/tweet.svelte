@@ -7,6 +7,7 @@
 
     import dayjs from "dayjs";
     import type { TwitterUser } from "../types";
+    import { onMount } from "svelte/internal";
 
     export let containerEl: HTMLDivElement | null = null;
 
@@ -26,7 +27,7 @@
     $: date = dayjs(timestamp);
     $: nowDate = dayjs();
 
-    $: dateText = "";
+    let dateText = "";
     $: if (isMain) {
         dateText = date.format("hh:mm · MMM D, YYYY");
     } else {
@@ -40,12 +41,18 @@
         else if (diff < 24 * 60 * 60 * 1000) { // Under 24 hours (show shours)
             dateText = `${Math.round(diff / (60 * 60 * 1000))}h`;
         }
+        else {
+            dateText = date.format("MMM D, YYYY");
+        }
     }
 
-    $: {
-        timestamp;
-        nowDate = dayjs();
-    };
+    onMount(() => {
+        const t = setInterval(() => {
+            nowDate = dayjs();
+        }, 500);
+
+        return () => clearInterval(t);
+    });
 
     function formatStat(n: number) {
         if (n > 1000) {
