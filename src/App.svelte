@@ -42,7 +42,7 @@
                     if (a?.commentList && a.commentList.length > 0) {
                         const nextIndex = a.mainComment ?? 0;
                         previousTweets = [...previousTweets, a];
-                        selectedTweet = {...a.commentList[nextIndex]};
+                        selectedTweet = a.commentList[nextIndex];
                     }
                 }
             }
@@ -52,7 +52,7 @@
                     previousTweets = [...previousTweets];
                     const n = previousTweets.pop();
                     if (n != undefined)
-                        selectedTweet = {...n};
+                        selectedTweet = n;
                 }
                 else if (showThreadMode === null) {
                     showThreadMode = tweets.findIndex(a => a === selectedTweet);
