@@ -217,7 +217,6 @@
     line-height: 28px;
 
     padding-bottom: 0;
-    padding-bottom: 12px;
 
     .header {
         display: inline-flex;
