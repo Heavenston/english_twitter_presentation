@@ -19,37 +19,8 @@ Not sure anyone has heard but,
 
 I resigned from Twitter
 `,
-
-    mainComment: 1,
     commentList: [],
 };
-
-startTweet.commentList?.push({
-    user: troll,
-    timestamp: Date.now(),
-    likes: 312200,
-    retweets: 66900,
-    quoteTweets: 37900,
-    showFullThread: true,
-
-    content: `
-Nobody cares
-
-+ ratio
-`,
-
-    commentList: [
-        {
-            user: Users.fake(),
-            timestamp: Date.now(),
-            likes: 312200,
-            retweets: 66900,
-            quoteTweets: 37900,
-
-            content: "Please stop",
-        },
-    ],
-});
 
 startTweet.commentList?.push({
     user: Users.twitter,
@@ -82,6 +53,32 @@ startTweet.commentList?.push({
                     content: "Not",
                 },
             ],
+        },
+    ],
+});
+
+startTweet.commentList?.push({
+    user: troll,
+    timestamp: Date.now(),
+    likes: 312200,
+    retweets: 66900,
+    quoteTweets: 37900,
+
+    content: `
+Nobody cares
+
++ ratio
+`,
+
+    commentList: [
+        {
+            user: Users.fake(),
+            timestamp: Date.now(),
+            likes: 312200,
+            retweets: 66900,
+            quoteTweets: 37900,
+
+            content: "Please stop",
         },
     ],
 });
