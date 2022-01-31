@@ -14,7 +14,8 @@ export interface TweetData {
     quoteTweets?: number;
     imageUrl?: string;
     maxImageHeight?: string;
+    showFullThread?: boolean;
 
-    comments?: TweetData[];
+    commentList?: TweetData[];
     content: string;
 }

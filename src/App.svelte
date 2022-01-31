@@ -1,6 +1,8 @@
 <script lang="ts">
-    import type { TweetData } from "./types";
     import Tweet from "./templates/tweet.svelte";
+    import ThreadDisplayer from "./components/threadDisplayer.svelte";
+
+    import type { TweetData } from "./types";
     import { onMount, afterUpdate } from "svelte/internal";
     import { spring } from 'svelte/motion';
     import tweets from "./tweets";
@@ -8,6 +10,8 @@
     let showThreadMode: null | number = 0;
     let previousTweets: TweetData[] = [];
     let selectedTweet: TweetData | null = null;
+
+    $: console.log(`Selected tweet: `, selectedTweet);
 
     let selectedTweetElement: HTMLDivElement | null = null;
     let feed: HTMLDivElement | null = null;
@@ -35,9 +39,9 @@
                 else {
                     let a = selectedTweet;
 
-                    if (a?.comments !== undefined && a.comments.length > 0) {
+                    if (a?.commentList && a.commentList.length > 0) {
                         previousTweets = [...previousTweets, a];
-                        selectedTweet = a.comments[0];
+                        selectedTweet = {...a.commentList[0]};
                     }
                 }
             }
@@ -47,7 +51,7 @@
                     previousTweets = [...previousTweets];
                     const n = previousTweets.pop();
                     if (n != undefined)
-                        selectedTweet = n;
+                        selectedTweet = {...n};
                 }
                 else if (showThreadMode === null) {
                     showThreadMode = tweets.findIndex(a => a === selectedTweet);
@@ -71,10 +75,10 @@
     <div class="feed" bind:this={feed}>
         <div class="scrollForcer" />
         {#if showThreadMode !== null}
-            {#each tweets as { content, comments: _, ...tweet}, i}
+            {#each tweets as { content, commentList: _, showFullThread, ...props}, i}
                 {#if i === showThreadMode}
                     <Tweet
-                        {...tweet}
+                        {...props}
                         showThisThread
                         replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
                         bind:containerEl={selectedTweetElement}
@@ -83,7 +87,7 @@
                     </Tweet>
                 {:else}
                     <Tweet
-                        {...tweet}
+                        {...props}
                         replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
                     >
                         <div style="white-space: pre-wrap;">{content.trim()}</div>
@@ -91,18 +95,18 @@
                 {/if}
             {/each}
         {:else}
-            {#each previousTweets as { content, comments: _, ...tweet}, i}
+            {#each previousTweets as { content, commentList: _, showFullThread: _, ...props}, i}
                 <Tweet
-                    {...tweet}
+                    {...props}
                     replyingTo={i > 0 ? previousTweets[i-1].user : null}
                     showReplyLine
                 >
                     <div style="white-space: pre-wrap;">{content.trim()}</div>
                 </Tweet>
             {/each}
-            {#each selectedTweet ? [selectedTweet] : [] as { content, comments: _, ...tweet}}
+            {#each selectedTweet ? [selectedTweet] : [] as { content, commentList: _, showFullThread: _, ...props}}
                 <Tweet
-                    {...tweet}
+                    {...props}
                     isMain={!showThreadMode}
                     replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
                     bind:containerEl={selectedTweetElement}
@@ -110,13 +114,19 @@
                     <div style="white-space: pre-wrap;">{content.trim()}</div>
                 </Tweet>
             {/each}
-            {#each selectedTweet?.comments ?? [] as { content, comments: _, ...tweet }}
-                <Tweet 
-                    {...tweet}
-                    replyingTo={selectedTweet?.user}
-                >
-                    <div style="white-space: pre-wrap;">{content.trim()}</div>
-                </Tweet>
+            {#each selectedTweet?.commentList ?? [] as tweet}
+                {@const { content, commentList: _, showFullThread, ...props } = tweet}
+
+                {#if showFullThread}
+                    <ThreadDisplayer tweet={tweet} replyingTo={selectedTweet.user} />
+                {:else}
+                    <Tweet 
+                        {...props}
+                        replyingTo={selectedTweet?.user}
+                    >
+                        <div style="white-space: pre-wrap;">{content.trim()}</div>
+                    </Tweet>
+                {/if}
             {/each}
         {/if}
         <div class="scrollForcer" />

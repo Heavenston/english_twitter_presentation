@@ -19,21 +19,45 @@ Not sure anyone has heard but,
 
 I resigned from Twitter
 `,
-    comments: [],
+    commentList: [],
 };
 
-startTweet.comments?.push({
+startTweet.commentList?.push({
     user: Users.twitter,
     timestamp: Date.now(),
     likes: 24600,
     retweets: 1219,
     quoteTweets: 153,
+    showFullThread: true,
 
     content: "absolute legend",
-    comments: [],
+    commentList: [
+        {
+            user: Users.twitter,
+            timestamp: Date.now(),
+            likes: 0,
+            retweets: 0,
+            quoteTweets: 1,
+            showFullThread: true,
+
+            content: "Maybe",
+            commentList: [
+                {
+                    user: Users.twitter,
+                    timestamp: Date.now(),
+                    likes: 0,
+                    retweets: 0,
+                    quoteTweets: 2,
+                    showFullThread: true,
+
+                    content: "Not",
+                },
+            ],
+        },
+    ],
 });
 
-startTweet.comments?.push({
+startTweet.commentList?.push({
     user: troll,
     timestamp: Date.now(),
     likes: 312200,
@@ -46,7 +70,7 @@ Nobody cares
 + ratio
 `,
 
-    comments: [
+    commentList: [
         {
             user: Users.fake(),
             timestamp: Date.now(),

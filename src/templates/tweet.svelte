@@ -5,7 +5,6 @@
     import ShareIcon from "../components/shareIcon.svelte";
     import CommentIcon from "../components/commentIcon.svelte";
 
-    import { onMount }  from "svelte/internal";
     import dayjs from "dayjs";
     import type { TwitterUser } from "../types";
 
@@ -47,14 +46,6 @@
         timestamp;
         nowDate = dayjs();
     };
-
-    onMount(() => {
-        const updateInterval = setInterval(() => {
-            nowDate = dayjs();
-        }, 500);
-
-        return () => clearInterval(updateInterval);
-    });
 
     function formatStat(n: number) {
         if (n > 1000) {
