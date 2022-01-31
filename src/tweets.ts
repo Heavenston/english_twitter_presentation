@@ -3,6 +3,34 @@ import Users from "./users";
 
 const troll = { ...Users.fake(), verified: true };
 
+type AddTweetResult = {
+    addTweet: (
+        data: { content: string } & Partial<TweetData>
+    ) => AddTweetResult;
+};
+
+function addTweet(
+    t: TweetData,
+    data: { content: string } & Partial<TweetData>
+): AddTweetResult {
+    const tweet = {
+        user: Users.jack,
+        timestamp: 1048806000000 + Math.random() * 24 * 60 * 60 * 1000,
+        likes: Math.random() * 9999 + 420000,
+        retweets: Math.random() * 9999 + 210000,
+        quoteTweets: Math.random() * 9999 + 210000,
+
+        ...data,
+
+        commentList: [],
+    };
+
+    if (t.commentList) t.commentList.push(tweet);
+    else t.commentList = [tweet];
+
+    return { addTweet: addTweet.bind(null, tweet) };
+}
+
 const startTweet: TweetData = {
     user: Users.jack,
     timestamp: 1638200880000,
@@ -22,65 +50,36 @@ I resigned from Twitter
     commentList: [],
 };
 
-startTweet.commentList?.push({
+addTweet(startTweet, {
     user: Users.twitter,
-    timestamp: Date.now(),
-    likes: 24600,
-    retweets: 1219,
-    quoteTweets: 153,
+
     showFullThread: true,
-
     content: "absolute legend",
-    commentList: [
-        {
-            user: Users.twitter,
-            timestamp: Date.now(),
-            likes: 0,
-            retweets: 0,
-            quoteTweets: 1,
-            showFullThread: true,
+})
+    .addTweet({
+        user: Users.twitter,
+        showFullThread: true,
 
-            content: "Maybe",
-            commentList: [
-                {
-                    user: Users.twitter,
-                    timestamp: Date.now(),
-                    likes: 0,
-                    retweets: 0,
-                    quoteTweets: 2,
-                    showFullThread: true,
+        content: "Maybe",
+    })
+    .addTweet({
+        user: Users.twitter,
+        showFullThread: true,
 
-                    content: "Not",
-                },
-            ],
-        },
-    ],
-});
+        content: "Not",
+    });
 
-startTweet.commentList?.push({
+addTweet(startTweet, {
     user: troll,
-    timestamp: Date.now(),
-    likes: 312200,
-    retweets: 66900,
-    quoteTweets: 37900,
 
     content: `
 Nobody cares
 
 + ratio
 `,
-
-    commentList: [
-        {
-            user: Users.fake(),
-            timestamp: Date.now(),
-            likes: 312200,
-            retweets: 66900,
-            quoteTweets: 37900,
-
-            content: "Please stop",
-        },
-    ],
+}).addTweet({
+    user: Users.fake(),
+    content: "Please stop",
 });
 
 export default [startTweet];
