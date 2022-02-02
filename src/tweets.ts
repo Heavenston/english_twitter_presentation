@@ -25,8 +25,8 @@ function createTweet(
         user: username ? getNewUser(username) : Users.fake(),
         timestamp: Math.random() * 24 * 60 * 60 * 1000,
         likes: Math.random() * 9999 + 420000,
-        retweets: Math.random() * 9999 + 210000,
-        quoteTweets: Math.random() * 9999 + 210000,
+        retweets: Math.random() * 9999 + 420000,
+        quoteTweets: Math.random() * 9999 + 420000,
 
         ...data,
     };
@@ -48,25 +48,7 @@ function addTweet(
     return { addTweet: addTweet.bind(null, tweet) };
 }
 
-const startTweet: TweetData = createTweet("Title", {
-    imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/a/ac/Bundesarchiv_Bild_146-1996-027-04A%2C_Junkers_Ju_288_V_2.jpg",
-    maxImageHeight: "250px",
-
-    content: `
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-                 Does the Twitter CEO’s departure
-                   signal a platform identity crisis?
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-`,
-    commentList: [],
-});
-
-addTweet(startTweet, "History", {
-    content: "hi",
-});
-
-const jackTweet: TweetData = {
+const startTweet: TweetData = {
     user: Users.jack,
     timestamp: 1638200880000,
     likes: 312200,
@@ -85,36 +67,20 @@ I resigned from Twitter
     commentList: [],
 };
 
-addTweet(startTweet, {
-    user: Users.twitter,
-
-    showFullThread: true,
-    content: "absolute legend",
-})
-    .addTweet({
-        user: Users.twitter,
-        showFullThread: true,
-
-        content: "Maybe",
-    })
-    .addTweet({
-        user: Users.twitter,
-        showFullThread: true,
-
-        content: "Not",
-    });
-
-addTweet(startTweet, {
-    user: troll,
+addTweet(startTweet, "Title", {
+    imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/a/ac/Bundesarchiv_Bild_146-1996-027-04A%2C_Junkers_Ju_288_V_2.jpg",
+    maxImageHeight: "250px",
 
     content: `
-Nobody cares
-
-+ ratio
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                 Does the Twitter CEO’s departure
+                   signal a platform identity crisis?
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 `,
-}).addTweet({
-    user: Users.fake(),
-    content: "Please stop",
+    commentList: [],
+}).addTweet("History", {
+    content: "hi",
 });
 
 export default [startTweet];
