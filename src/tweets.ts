@@ -70,6 +70,23 @@ I resigned from Twitter
     commentList: [],
 };
 
+export default [
+    startTweet,
+    {
+        user: Users.malo,
+        timestamp: Date.now(),
+        likes: -10,
+        retweets: -100,
+        quoteTweets: -553,
+
+        content: `
+POV about Article 3
+        By Malo Legendre-Lemaire
+`,
+        commentList: [],
+    },
+];
+
 addTweet(startTweet, null, {
     user: {
         ...getNewUser("Intro"),
@@ -88,12 +105,14 @@ addTweet(startTweet, null, {
 // --------------------------------------------------------------------------------------------------------------------
 // WHAT IS TWITTER
 // --------------------------------------------------------------------------------------------------------------------
-    .addTweet("WhAt Is TwItTeR", {
+    .addTweet(null, {
+        user: Users.twitter,
         content: `
 ---------------------------------------------------------------
-                           | So, what is twitter ? |
+                         💫 So, what is twitter ? 🐦
 ---------------------------------------------------------------
-       A patform where you can send "tweets" with a limit of 280 characters.
+
+       A patform where you can send "tweets" that have a limit of 280 characters.
 `,
     })
     .addTweet("Images!", {
@@ -104,6 +123,14 @@ addTweet(startTweet, null, {
 // --------------------------------------------------------------------------------------------------------------------
 // Timeline
 // --------------------------------------------------------------------------------------------------------------------
+    .addTweet(null, {
+        user: Users.jack,
+        content: `
+---------------------------------------------------------------
+               👨‍💼 Jack Dorsey as CEO Of Twitter 🚪
+---------------------------------------------------------------
+`,
+    })
     .addTweet("Timeline (not2scale)", {
         content: `
 &nbsp↯
@@ -122,21 +149,25 @@ addTweet(startTweet, null, {
  ↓
 
 `,
-    });
-
-export default [
-    startTweet,
-    {
-        user: Users.malo,
-        timestamp: Date.now(),
-        likes: -10,
-        retweets: -100,
-        quoteTweets: -553,
-
+    })
+// --------------------------------------------------------------------------------------------------------------------
+// Jack Dorsey == Steve Jobs
+// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
+// Twitter Monetization
+// --------------------------------------------------------------------------------------------------------------------
+    .addTweet("Money 🤑", {
         content: `
-POV about Article 3
-        By Malo Legendre-Lemaire
+---------------------------------------------------------------
+       💸 The problem with Twitter's monetization 💰
+---------------------------------------------------------------
 `,
-        commentList: [],
-    },
-];
+    })
+    .addTweet("Money 🤑", {
+        content: `
+&nbsp   Twitter users prefer to argue about if HTML is a programming language.
+
+    So they aren't as interested by ads (i.e. as in Instagram).
+`,
+    })
+
