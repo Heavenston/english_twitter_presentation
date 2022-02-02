@@ -111,7 +111,7 @@
                         bind:containerEl={selectedTweetElement}
                     >
                         <div style="white-space: pre-wrap;">
-                            {content.trim()}
+                            {@html content.trim()}
                         </div>
                     </Tweet>
                 {:else}
@@ -121,7 +121,7 @@
                             ?.user ?? null}
                     >
                         <div style="white-space: pre-wrap;">
-                            {content.trim()}
+                            {@html content.trim()}
                         </div>
                     </Tweet>
                 {/if}
@@ -144,7 +144,7 @@
                         ?.user ?? null}
                     bind:containerEl={selectedTweetElement}
                 >
-                    <div style="white-space: pre-wrap;">{content.trim()}</div>
+                    <div style="white-space: pre-wrap;">{@html content.trim()}</div>
                 </Tweet>
             {/each}
             {#each selectedTweet?.commentList ?? [] as tweet}
@@ -160,7 +160,7 @@
                 {:else}
                     <Tweet {...props} replyingTo={selectedTweet?.user}>
                         <div style="white-space: pre-wrap;">
-                            {content.trim()}
+                            {@html content.trim()}
                         </div>
                     </Tweet>
                 {/if}
