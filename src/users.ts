@@ -1,14 +1,22 @@
 import type { TwitterUser } from "./types";
 
 const users: {
-    fake: () => TwitterUser;
+    fake: (
+        nickname?: string,
+        handle?: string,
+        verified?: boolean
+    ) => TwitterUser;
     jack: TwitterUser;
     twitter: TwitterUser;
 } = {
-    fake: () => ({
-        nickname: "User",
-        handle: "user",
-        verified: false,
+    fake: (
+        nickname = "User",
+        handle = nickname.toLowerCase(),
+        verified = false
+    ) => ({
+        nickname,
+        handle,
+        verified,
         avatarUrl: `https://picsum.photos/seed/${Math.floor(
             Math.random() * 5000
         )}/200`,
