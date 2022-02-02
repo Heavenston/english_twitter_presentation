@@ -208,6 +208,8 @@
 
     .embed {
         width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         height: auto;
 
         border-radius: 16px;
@@ -279,6 +281,7 @@
 
     .mainSide {
         padding-bottom: 12px;
+        flex-grow: 1;
     }
 
     .contentBand {
