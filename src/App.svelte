@@ -7,6 +7,8 @@
     import { spring } from "svelte/motion";
     import tweets from "./tweets";
 
+    const startTime = Date.now();
+
     let selectedTweetPath: string =
         sessionStorage.getItem("selectedTweetPath") ?? "$0";
     $: sessionStorage.setItem("selectedTweetPath", selectedTweetPath);
@@ -44,7 +46,7 @@
     function updateScroll() {
         if (selectedTweetElement === null || feed === null) return;
         const clientRect = selectedTweetElement.getBoundingClientRect();
-        scrollSpring.set(clientRect.top + feed.scrollTop - 25);
+        scrollSpring.set(clientRect.top + feed.scrollTop - 25, { hard: Date.now() - startTime < 1000 });
     }
 
     onMount(() => {
