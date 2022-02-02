@@ -36,7 +36,7 @@
     let selectedTweetElement: HTMLDivElement | null = null;
     let feed: HTMLDivElement | null = null;
 
-    let scrollSpring = spring(0, { stiffness: 0.3, damping: 1.0 });
+    let scrollSpring = spring(0, { stiffness: 0.3, damping: 1.0, precision: 2 });
     $: if (feed !== null) {
         feed.scrollTop = $scrollSpring;
     }
