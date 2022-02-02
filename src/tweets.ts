@@ -25,7 +25,7 @@ function createTweet(
 ): TweetData {
     return {
         user: nickname ? getNewUser(nickname) : Users.fake(),
-        timestamp: Math.random() * 24 * 60 * 60 * 1000,
+        timestamp: Math.random() * 3 * 60 * 60 * 1000,
         likes: Math.random() * 9999 + 420000,
         retweets: Math.random() * 9999 + 420000,
         quoteTweets: Math.random() * 9999 + 420000,
@@ -87,4 +87,19 @@ addTweet(startTweet, null, {
     content: "hi",
 });
 
-export default [startTweet];
+export default [
+    startTweet,
+    {
+        user: Users.malo,
+        timestamp: Date.now(),
+        likes: -10,
+        retweets: -100,
+        quoteTweets: -553,
+
+        content: `
+POV about Article 3
+        By Malo Legendre-Lemaire
+`,
+        commentList: [],
+    },
+];

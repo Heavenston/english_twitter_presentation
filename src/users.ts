@@ -4,6 +4,7 @@ const users: {
     fake: () => TwitterUser;
     jack: TwitterUser;
     twitter: TwitterUser;
+    malo: TwitterUser;
 } = {
     fake: () => ({
         nickname: "User",
@@ -27,6 +28,13 @@ const users: {
         avatarUrl:
             "https://pbs.twimg.com/profile_images/1486805599367180290/Lp3amoqK_400x400.jpg",
         hexagonalPfp: true,
+    },
+    malo: {
+        nickname: "Malo",
+        handle: "malolegendrelemaire",
+        verified: true,
+        avatarUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaKY4FMHglN_HQ13F2mUGFPMTx0wgfg4tk8g&usqp=CAU",
     },
 };
 
