@@ -24,7 +24,7 @@ function createTweet(
     data: { content: string } & Partial<TweetData>
 ): TweetData {
     return {
-        user: nickname ? getNewUser(nickname) : Users.fake(),
+        user: nickname != null ? getNewUser(nickname) : Users.fake(),
         timestamp: Math.random() * 3 * 60 * 60 * 1000,
         likes: Math.random() * 9999 + 420000,
         retweets: Math.random() * 9999 + 420000,
@@ -46,6 +46,7 @@ function addTweet(
 
     if (t.commentList) t.commentList.push(tweet);
     else t.commentList = [tweet];
+    t.showFullThread = true;
 
     return { addTweet: addTweet.bind(null, tweet) };
 }
@@ -83,9 +84,45 @@ addTweet(startTweet, null, {
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 `,
     commentList: [],
-}).addTweet("History", {
-    content: "hi",
-});
+})
+// --------------------------------------------------------------------------------------------------------------------
+// WHAT IS TWITTER
+// --------------------------------------------------------------------------------------------------------------------
+    .addTweet("WhAt Is TwItTeR", {
+        content: `
+---------------------------------------------------------------
+                           | So, what is twitter ? |
+---------------------------------------------------------------
+       A patform where you can send "tweets" with a limit of 280 characters.
+`,
+    })
+    .addTweet("Images!", {
+        content: `With the tweet text can be joined image(s), videos, gifs, or even polls`,
+        imageUrl: "https://www.epita.fr/wp-content/uploads/2017/08/EPITA-campus-rennes-2019.jpg",
+        maxImageHeight: "250px",
+    })
+// --------------------------------------------------------------------------------------------------------------------
+// Timeline
+// --------------------------------------------------------------------------------------------------------------------
+    .addTweet("Timeline (not2scale)", {
+        content: `
+&nbsp↯
+👨‍💼 2006, Twitter is created -> Jack dorsey is CEO
+  |
+🚪 2008, Jack Dorsey leaves (stays as a ChairMen)
+  |
+  |
+👨‍💼 2015,  Jack Dorsey comes back as CEO
+  |
+  |
+  |
+  |
+🚪 2021,  Jack Dorsey leaves Twitter completely
+  |
+ ↓
+
+`,
+    });
 
 export default [
     startTweet,
