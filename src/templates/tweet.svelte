@@ -29,7 +29,7 @@
 
     let dateText = "";
     $: if (isMain) {
-        dateText = date.format("hh:mm · MMM D, YYYY");
+        dateText = date.format("hh:mmA · MMM D, YYYY");
     } else {
         const diff = +nowDate - +date;
         if (diff < 60 * 1000) { // Under a minute (show seconds)
