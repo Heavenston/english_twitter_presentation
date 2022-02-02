@@ -271,8 +271,6 @@
 
         padding: 16px 4px 16px 4px;
         border-top: 1px solid rgb(56, 68, 77);
-
-        display: none;
     }
 
 }
