@@ -133,7 +133,7 @@
                     replyingTo={i > 0 ? previousTweets[i - 1].user : null}
                     showReplyLine
                 >
-                    <div style="white-space: pre-wrap;">{content.trim()}</div>
+                    <div style="white-space: pre-wrap;">{@html content.trim()}</div>
                 </Tweet>
             {/each}
             {#each selectedTweet ? [selectedTweet] : [] as { content, commentList, showFullThread, ...props }}

@@ -16,7 +16,7 @@
     {replyingTo}
     showReplyLine={tweet.commentList && tweet.commentList.length > 0}
 >
-    <div style="white-space: pre-wrap;">{tweet.content.trim()}</div>
+    <div style="white-space: pre-wrap;">{@html tweet.content.trim()}</div>
 </Tweet>
 
 {#if tweet.commentList && tweet.commentList.length > 0}
