@@ -216,7 +216,7 @@
         margin-top: 12px;
 
         object-fit: cover;
-        object-position: center top;
+        object-position: center;
     }
 }
 
