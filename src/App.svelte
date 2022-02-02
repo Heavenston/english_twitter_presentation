@@ -4,12 +4,32 @@
 
     import type { TweetData } from "./types";
     import { onMount, afterUpdate } from "svelte/internal";
-    import { spring } from 'svelte/motion';
+    import { spring } from "svelte/motion";
     import tweets from "./tweets";
 
-    let showThreadMode: null | number = 0;
+    let selectedTweetPath: string =
+        sessionStorage.getItem("selectedTweetPath") ?? "$0";
+    $: sessionStorage.setItem("selectedTweetPath", selectedTweetPath);
+
+    let showThreadMode: null | number;
     let previousTweets: TweetData[] = [];
     let selectedTweet: TweetData | null = null;
+
+    {
+        if (selectedTweetPath.startsWith("$")) {
+            selectedTweet = null;
+            showThreadMode = parseInt(selectedTweetPath.slice(1));
+        } else {
+            showThreadMode = null;
+            let path = selectedTweetPath.split(";");
+            let t: TweetData[] = tweets;
+            for (const p of path) {
+                if (selectedTweet) previousTweets.push(selectedTweet);
+                selectedTweet = t[parseInt(p)];
+                t = selectedTweet.commentList ?? [];
+            }
+        }
+    }
 
     $: console.log(`Selected tweet: `, selectedTweet);
 
@@ -19,13 +39,12 @@
     let scrollSpring = spring(0, { stiffness: 0.3, damping: 1.0 });
     $: if (feed !== null) {
         feed.scrollTop = $scrollSpring;
-    };
+    }
 
     function updateScroll() {
-        if (selectedTweetElement !== null && feed !== null) {
-            const clientRect = selectedTweetElement.getBoundingClientRect();
-            scrollSpring.set(clientRect.top + feed.scrollTop - 25);
-        }
+        if (selectedTweetElement === null || feed === null) return;
+        const clientRect = selectedTweetElement.getBoundingClientRect();
+        scrollSpring.set(clientRect.top + feed.scrollTop - 25);
     }
 
     onMount(() => {
@@ -34,15 +53,16 @@
                 ev.preventDefault();
                 if (showThreadMode != null) {
                     selectedTweet = tweets[showThreadMode];
+                    selectedTweetPath = showThreadMode.toString();
                     showThreadMode = null;
-                }
-                else {
+                } else {
                     let a = selectedTweet;
 
                     if (a?.commentList && a.commentList.length > 0) {
                         const nextIndex = a.mainComment ?? 0;
                         previousTweets = [...previousTweets, a];
                         selectedTweet = a.commentList[nextIndex];
+                        selectedTweetPath += ";" + nextIndex;
                     }
                 }
             }
@@ -51,15 +71,18 @@
                 if (previousTweets.length > 0) {
                     previousTweets = [...previousTweets];
                     const n = previousTweets.pop();
-                    if (n != undefined)
-                        selectedTweet = n;
-                }
-                else if (showThreadMode === null) {
+                    if (n != undefined) selectedTweet = n;
+                    selectedTweetPath = selectedTweetPath
+                        .split(";")
+                        .slice(0, -1)
+                        .join(";");
+                } else if (showThreadMode === null) {
                     showThreadMode = tweets.findIndex(a => a === selectedTweet);
                     selectedTweet = null;
+                    selectedTweetPath = "$" + showThreadMode;
                 }
             }
-        }
+        };
         document.addEventListener("keydown", keyDownListener);
         window.addEventListener("resize", updateScroll);
 
@@ -76,56 +99,67 @@
     <div class="feed" bind:this={feed}>
         <div class="scrollForcer" />
         {#if showThreadMode !== null}
-            {#each tweets as { content, commentList: _, showFullThread, ...props}, i}
+            {#each tweets as { content, commentList: _, showFullThread, ...props }, i}
                 {#if i === showThreadMode}
                     <Tweet
                         {...props}
                         showThisThread
-                        replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
+                        replyingTo={previousTweets[previousTweets.length - 1]
+                            ?.user ?? null}
                         bind:containerEl={selectedTweetElement}
                     >
-                        <div style="white-space: pre-wrap;">{content.trim()}</div>
+                        <div style="white-space: pre-wrap;">
+                            {content.trim()}
+                        </div>
                     </Tweet>
                 {:else}
                     <Tweet
                         {...props}
-                        replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
+                        replyingTo={previousTweets[previousTweets.length - 1]
+                            ?.user ?? null}
                     >
-                        <div style="white-space: pre-wrap;">{content.trim()}</div>
+                        <div style="white-space: pre-wrap;">
+                            {content.trim()}
+                        </div>
                     </Tweet>
                 {/if}
             {/each}
         {:else}
-            {#each previousTweets as { content, commentList: _, showFullThread: _, ...props}, i}
+            {#each previousTweets as { content, commentList, showFullThread, ...props }, i}
                 <Tweet
                     {...props}
-                    replyingTo={i > 0 ? previousTweets[i-1].user : null}
+                    replyingTo={i > 0 ? previousTweets[i - 1].user : null}
                     showReplyLine
                 >
                     <div style="white-space: pre-wrap;">{content.trim()}</div>
                 </Tweet>
             {/each}
-            {#each selectedTweet ? [selectedTweet] : [] as { content, commentList: _, showFullThread: _, ...props}}
+            {#each selectedTweet ? [selectedTweet] : [] as { content, commentList, showFullThread, ...props }}
                 <Tweet
                     {...props}
                     isMain={!showThreadMode}
-                    replyingTo={previousTweets[previousTweets.length-1]?.user ?? null}
+                    replyingTo={previousTweets[previousTweets.length - 1]
+                        ?.user ?? null}
                     bind:containerEl={selectedTweetElement}
                 >
                     <div style="white-space: pre-wrap;">{content.trim()}</div>
                 </Tweet>
             {/each}
             {#each selectedTweet?.commentList ?? [] as tweet}
-                {@const { content, commentList: _, showFullThread, ...props } = tweet}
+                {@const {
+                    content,
+                    commentList: _,
+                    showFullThread,
+                    ...props
+                } = tweet}
 
                 {#if showFullThread}
-                    <ThreadDisplayer tweet={tweet} replyingTo={selectedTweet.user} />
+                    <ThreadDisplayer {tweet} replyingTo={selectedTweet?.user} />
                 {:else}
-                    <Tweet 
-                        {...props}
-                        replyingTo={selectedTweet?.user}
-                    >
-                        <div style="white-space: pre-wrap;">{content.trim()}</div>
+                    <Tweet {...props} replyingTo={selectedTweet?.user}>
+                        <div style="white-space: pre-wrap;">
+                            {content.trim()}
+                        </div>
                     </Tweet>
                 {/if}
             {/each}
@@ -141,7 +175,8 @@
     }
 
     :global(body) {
-        font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            Roboto, Helvetica, Arial, sans-serif;
     }
 
     .container {
@@ -151,7 +186,7 @@
         bottom: 0;
         left: 0;
 
-        background-color: rgba(21,32,43,1.00);
+        background-color: rgba(21, 32, 43, 1);
 
         display: flex;
         justify-content: center;

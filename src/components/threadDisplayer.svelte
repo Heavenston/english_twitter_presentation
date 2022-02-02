@@ -3,7 +3,7 @@
     import Tweet from "../templates/tweet.svelte";
 
     export let tweet: TweetData;
-    export let replyingTo: TwitterUser;
+    export let replyingTo: TwitterUser | null = null;
 </script>
 
 <Tweet 
