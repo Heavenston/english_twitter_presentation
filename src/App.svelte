@@ -24,7 +24,7 @@
     function updateScroll() {
         if (selectedTweetElement !== null && feed !== null) {
             const clientRect = selectedTweetElement.getBoundingClientRect();
-            scrollSpring.set(clientRect.top + feed.scrollTop - 50);
+            scrollSpring.set(clientRect.top + feed.scrollTop - 25);
         }
     }
 
