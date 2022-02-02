@@ -11,18 +11,20 @@ type AddTweetResult = {
 };
 
 let userHandleCounter = 0;
-function getNewUser(username: string): TwitterUser {
+function getNewUser(nickname: string): TwitterUser {
     return {
-        ...Users.fake(username, `twitterCrisis${userHandleCounter++}`),
+        ...Users.fake(),
+        nickname,
+        handle: `twitterCrisis${userHandleCounter++}`,
     };
 }
 
 function createTweet(
-    username: string | null,
+    nickname: string | null,
     data: { content: string } & Partial<TweetData>
 ): TweetData {
     return {
-        user: username ? getNewUser(username) : Users.fake(),
+        user: nickname ? getNewUser(nickname) : Users.fake(),
         timestamp: Math.random() * 24 * 60 * 60 * 1000,
         likes: Math.random() * 9999 + 420000,
         retweets: Math.random() * 9999 + 420000,
@@ -34,10 +36,10 @@ function createTweet(
 
 function addTweet(
     t: TweetData,
-    username: string | null,
+    nickname: string | null,
     data: { content: string } & Partial<TweetData>
 ): AddTweetResult {
-    const tweet = createTweet(username, {
+    const tweet = createTweet(nickname, {
         timestamp: t.timestamp + Math.random() * 24 * 60 * 60 * 1000,
         ...data,
     });
