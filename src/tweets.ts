@@ -15,7 +15,7 @@ function getNewUser(nickname: string): TwitterUser {
     return {
         ...Users.fake(),
         nickname,
-        handle: `twitterCrisis${userHandleCounter++}`,
+        handle: `twitterCrisis${++userHandleCounter}`,
     };
 }
 
@@ -69,10 +69,12 @@ I resigned from Twitter
     commentList: [],
 };
 
-addTweet(startTweet, "Title", {
-    imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/a/ac/Bundesarchiv_Bild_146-1996-027-04A%2C_Junkers_Ju_288_V_2.jpg",
-    maxImageHeight: "250px",
+addTweet(startTweet, null, {
+    user: {
+        ...getNewUser("Intro"),
+        avatarUrl:
+            "https://upload.wikimedia.org/wikipedia/commons/a/ac/Bundesarchiv_Bild_146-1996-027-04A%2C_Junkers_Ju_288_V_2.jpg",
+    },
 
     content: `
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
