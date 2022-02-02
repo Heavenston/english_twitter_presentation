@@ -11,7 +11,7 @@
         sessionStorage.getItem("selectedTweetPath") ?? "$0";
     $: sessionStorage.setItem("selectedTweetPath", selectedTweetPath);
 
-    let showThreadMode: null | number;
+    let showThreadMode: null | number = 0;
     let previousTweets: TweetData[] = [];
     let selectedTweet: TweetData | null = null;
 
@@ -88,7 +88,7 @@
 
         return () => {
             document.removeEventListener("keydown", keyDownListener);
-            document.removeEventListener("resize", updateScroll);
+            window.removeEventListener("resize", updateScroll);
         };
     });
 
