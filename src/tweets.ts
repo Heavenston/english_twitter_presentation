@@ -1,29 +1,46 @@
-import type { TweetData } from "./types";
+import type { TweetData, TwitterUser } from "./types";
 import Users from "./users";
 
 const troll = { ...Users.fake(), verified: true };
 
 type AddTweetResult = {
     addTweet: (
+        username: string | null,
         data: { content: string } & Partial<TweetData>
     ) => AddTweetResult;
 };
 
-function addTweet(
-    t: TweetData,
+let userHandleCounter = 0;
+function getNewUser(username: string): TwitterUser {
+    return {
+        ...Users.fake(username, `twitterCrisis${userHandleCounter++}`),
+    };
+}
+
+function createTweet(
+    username: string | null,
     data: { content: string } & Partial<TweetData>
-): AddTweetResult {
-    const tweet = {
-        user: Users.jack,
-        timestamp: 1048806000000 + Math.random() * 24 * 60 * 60 * 1000,
+): TweetData {
+    return {
+        user: username ? getNewUser(username) : Users.fake(),
+        timestamp: Math.random() * 24 * 60 * 60 * 1000,
         likes: Math.random() * 9999 + 420000,
         retweets: Math.random() * 9999 + 210000,
         quoteTweets: Math.random() * 9999 + 210000,
 
         ...data,
-
-        commentList: [],
     };
+}
+
+function addTweet(
+    t: TweetData,
+    username: string | null,
+    data: { content: string } & Partial<TweetData>
+): AddTweetResult {
+    const tweet = createTweet(username, {
+        timestamp: t.timestamp + Math.random() * 24 * 60 * 60 * 1000,
+        ...data,
+    });
 
     if (t.commentList) t.commentList.push(tweet);
     else t.commentList = [tweet];
@@ -31,7 +48,25 @@ function addTweet(
     return { addTweet: addTweet.bind(null, tweet) };
 }
 
-const startTweet: TweetData = {
+const startTweet: TweetData = createTweet("Title", {
+    imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/a/ac/Bundesarchiv_Bild_146-1996-027-04A%2C_Junkers_Ju_288_V_2.jpg",
+    maxImageHeight: "250px",
+
+    content: `
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                 Does the Twitter CEO’s departure
+                   signal a platform identity crisis?
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+`,
+    commentList: [],
+});
+
+addTweet(startTweet, "History", {
+    content: "hi",
+});
+
+const jackTweet: TweetData = {
     user: Users.jack,
     timestamp: 1638200880000,
     likes: 312200,
