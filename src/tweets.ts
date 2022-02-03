@@ -164,7 +164,7 @@ addTweet(startTweet, null, {
     })
     .addTweet("Money 🤑", {
         content: `
-&nbsp   Ads were the only revenue for Twitter. \
+&nbsp   Ads were the principal revenue for Twitter. \
 But it's users prefer to argue about if HTML is a programming language.
 
     So they aren't as interested by ads (i.e. compared to Instagram).
@@ -176,8 +176,39 @@ But it's users prefer to argue about if HTML is a programming language.
     .addTweet("Money 🤑", {
         content: `
 ---------------------------------------------------------------
-       💸 What happened to Twitter after Dorsey 💰
+                 🆔 Changes of Twitter's Identity 🐦
 ---------------------------------------------------------------
 `,
     })
+    .addTweet("Money 🤑", {
+        content: `<center>\
+Fleets (aka Stories)
+17th November 2020 - 14th July 2021
+
+Spaces
+3rd May 2021
+
+Twitter Blue
+3rd June
+
+(Ticketed) Spaces
+3rd June
+</center>`,
+    })
+    .addTweet("Money 🤑", {
+        content: `<center>\
+Fleets (aka Stories)
+17th November 2020 - 14th July 2021
+
+Spaces
+3rd May 2021
+
+Twitter Blue
+3rd June
+
+(Ticketed) Spaces
+3rd June
+</center>`,
+    })
+
 
