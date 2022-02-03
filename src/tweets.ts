@@ -173,14 +173,14 @@ But it's users prefer to argue about if HTML is a programming language.
 // --------------------------------------------------------------------------------------------------------------------
 // After Dorsey
 // --------------------------------------------------------------------------------------------------------------------
-    .addTweet("Money 🤑", {
+    .addTweet("Twitter's Identity", {
         content: `
 ---------------------------------------------------------------
                  🆔 Changes of Twitter's Identity 🐦
 ---------------------------------------------------------------
 `,
     })
-    .addTweet("Money 🤑", {
+    .addTweet("Twitter's Identity", {
         content: `<center>\
 Fleets (aka Stories)
 17th November 2020 - 14th July 2021
@@ -192,23 +192,11 @@ Twitter Blue
 3rd June
 
 (Ticketed) Spaces
-3rd June
+3rd May
 </center>`,
     })
-    .addTweet("Money 🤑", {
-        content: `<center>\
-Fleets (aka Stories)
-17th November 2020 - 14th July 2021
-
-Spaces
-3rd May 2021
-
-Twitter Blue
-3rd June
-
-(Ticketed) Spaces
-3rd June
-</center>`,
-    })
+// --------------------------------------------------------------------------------------------------------------------
+// After Dorsey
+// --------------------------------------------------------------------------------------------------------------------
 
 
