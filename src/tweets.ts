@@ -167,7 +167,8 @@ addTweet(startTweet, null, {
 &nbsp   Ads were the principal revenue for Twitter. \
 But it's users prefer to argue about if HTML is a programming language.
 
-    So they aren't as interested by ads (i.e. compared to Instagram).
+    So they aren't as interested by ads (i.e. compared to Instagram), which \
+means companies prefer doing virtue-signalling on twitter.
 `,
     })
 // --------------------------------------------------------------------------------------------------------------------
@@ -196,7 +197,37 @@ Twitter Blue
 </center>`,
     })
 // --------------------------------------------------------------------------------------------------------------------
-// After Dorsey
+// Conclusion
 // --------------------------------------------------------------------------------------------------------------------
+    .addTweet("", {
+        content: `
+---------------------------------------------------------------
+<center>Is twitter going to have an identity crisis ?</center>\
+---------------------------------------------------------------
+`,
+    })
+    .addTweet("Ending", {
+        content: `
+Evidences are pointing toward Twitter not changing it's identity more after the leave of Jack than before.
+`,
+    })
+    .addTweet("Ending", {
+        content: `
+---------------------------------------------------------------
+                                 Any questions ?
+---------------------------------------------------------------
+`,
+    })
+    .addTweet("Ending", {
+        content: `
+---------------------------------------------------------------
+<center>\
+What's your opinion ?
+Should twitter's uniqueness as a platform
+be protected from any changes?
+</center>\
+---------------------------------------------------------------
+`,
+    })
 
 
