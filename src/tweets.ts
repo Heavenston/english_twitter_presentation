@@ -143,7 +143,6 @@ addTweet(startTweet, null, {
   |
   |
   |
-  |
 🚪 2021,  Jack Dorsey leaves Twitter completely
   |
  ↓
@@ -165,9 +164,20 @@ addTweet(startTweet, null, {
     })
     .addTweet("Money 🤑", {
         content: `
-&nbsp   Twitter users prefer to argue about if HTML is a programming language.
+&nbsp   Ads were the only revenue for Twitter. \
+But it's users prefer to argue about if HTML is a programming language.
 
-    So they aren't as interested by ads (i.e. as in Instagram).
+    So they aren't as interested by ads (i.e. compared to Instagram).
+`,
+    })
+// --------------------------------------------------------------------------------------------------------------------
+// After Dorsey
+// --------------------------------------------------------------------------------------------------------------------
+    .addTweet("Money 🤑", {
+        content: `
+---------------------------------------------------------------
+       💸 What happened to Twitter after Dorsey 💰
+---------------------------------------------------------------
 `,
     })
 
