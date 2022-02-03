@@ -40,7 +40,8 @@ function addTweet(
     data: { content: string } & Partial<TweetData>
 ): AddTweetResult {
     const tweet = createTweet(nickname, {
-        timestamp: t.timestamp + Math.random() * 24 * 60 * 60 * 1000,
+        //timestamp: t.timestamp + Math.random() * 24 * 60 * 60 * 1000,
+        timestamp: t.timestamp,
         ...data,
     });
 
@@ -53,7 +54,7 @@ function addTweet(
 
 const startTweet: TweetData = {
     user: Users.jack,
-    timestamp: 1638200880000,
+    timestamp: Date.now(),
     likes: 312200,
     retweets: 66900,
     quoteTweets: 37900,
