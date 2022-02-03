@@ -50,47 +50,65 @@
     }
 
     onMount(() => {
+        function nextSlide() {
+            if (showThreadMode != null) {
+                selectedTweet = tweets[showThreadMode];
+                selectedTweetPath = showThreadMode.toString();
+                showThreadMode = null;
+                return;
+            }
+            let a = selectedTweet;
+
+            if (a?.commentList && a.commentList.length > 0) {
+                const nextIndex = a.mainComment ?? 0;
+                previousTweets = [...previousTweets, a];
+                selectedTweet = a.commentList[nextIndex];
+                selectedTweetPath += ";" + nextIndex;
+            }
+        }
+        function previousSlide() {
+            if (previousTweets.length > 0) {
+                previousTweets = [...previousTweets];
+                const n = previousTweets.pop();
+                if (n != undefined) selectedTweet = n;
+                selectedTweetPath = selectedTweetPath
+                    .split(";")
+                    .slice(0, -1)
+                    .join(";");
+            } else if (showThreadMode === null) {
+                showThreadMode = tweets.findIndex(a => a === selectedTweet);
+                selectedTweet = null;
+                selectedTweetPath = "$" + showThreadMode;
+            }
+        }
+
         const keyDownListener = (ev: KeyboardEvent) => {
             if (ev.code == "Space" || ev.code == "ArrowRight") {
                 ev.preventDefault();
-                if (showThreadMode != null) {
-                    selectedTweet = tweets[showThreadMode];
-                    selectedTweetPath = showThreadMode.toString();
-                    showThreadMode = null;
-                } else {
-                    let a = selectedTweet;
-
-                    if (a?.commentList && a.commentList.length > 0) {
-                        const nextIndex = a.mainComment ?? 0;
-                        previousTweets = [...previousTweets, a];
-                        selectedTweet = a.commentList[nextIndex];
-                        selectedTweetPath += ";" + nextIndex;
-                    }
-                }
+                nextSlide();
             }
             if (ev.code == "ArrowLeft") {
                 ev.preventDefault();
-                if (previousTweets.length > 0) {
-                    previousTweets = [...previousTweets];
-                    const n = previousTweets.pop();
-                    if (n != undefined) selectedTweet = n;
-                    selectedTweetPath = selectedTweetPath
-                        .split(";")
-                        .slice(0, -1)
-                        .join(";");
-                } else if (showThreadMode === null) {
-                    showThreadMode = tweets.findIndex(a => a === selectedTweet);
-                    selectedTweet = null;
-                    selectedTweetPath = "$" + showThreadMode;
-                }
+                previousSlide();
             }
         };
+        const clickListener = (ev: MouseEvent) => {
+            ev.preventDefault();
+            if (ev.clientX < window.innerWidth / 2)
+                previousSlide();
+            else
+                nextSlide();
+        }
+
         document.addEventListener("keydown", keyDownListener);
         window.addEventListener("resize", updateScroll);
+        document.addEventListener("click", clickListener);
 
         return () => {
             document.removeEventListener("keydown", keyDownListener);
             window.removeEventListener("resize", updateScroll);
+            document.removeEventListener("click", clickListener);
+
         };
     });
 
