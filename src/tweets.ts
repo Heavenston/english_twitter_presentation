@@ -113,6 +113,7 @@ addTweet(startTweet, null, {
 ---------------------------------------------------------------
 
        A patform where you can send "tweets" that have a limit of 280 characters.
+       It's basically a global wire system !
 `,
     })
     .addTweet("Images!", {
